@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Валентинка 💜</title>
-
 <style>
   body {
     margin: 0;
@@ -16,6 +15,19 @@
     align-items: center;
     font-family: Arial, sans-serif;
     position: relative;
+  }
+
+  /* Зайче и текст горе */
+  .top-text {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 1px 1px 4px black;
   }
 
   .card {
@@ -30,7 +42,7 @@
     transition: transform 0.5s;
   }
 
-  .bunny {
+  .stitch {
     font-size: 60px;
     display: inline-block;
     transition: transform 0.5s;
@@ -67,7 +79,7 @@
     left: 190px;
   }
 
-  /* Анимация танц на стич */
+  /* Танцува Stitch */
   .dance {
     animation: danceAnim 1s infinite alternate;
   }
@@ -105,10 +117,10 @@
     to { transform: translateY(100vh) rotate(720deg); }
   }
 
-  /* "Опитай пак" съобщение */
+  /* "Опитай пак" текст */
   .try-again {
     position: absolute;
-    top: 10px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 20px;
@@ -121,16 +133,16 @@
 </head>
 
 <body>
-
 <audio id="music" loop>
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c7f1f7a94.mp3" type="audio/mpeg">
 </audio>
 
+<div class="top-text">🐰 Бъди моя Валентинка!</div>
 <div class="try-again" id="tryText"></div>
 
 <div class="card">
-  <div class="bunny" id="stitch">🐰</div>
-  <h1>Ще ми станеш ли Валентинка! 💜</h1>
+  <div class="stitch" id="stitch">🟦</div>
+  <h1 id="mainText">Ще бъдеш ли моя Валентинка?</h1>
   <div class="buttons">
     <button id="yes">Да 💜</button>
     <button id="no">Не 😢</button>
@@ -141,37 +153,21 @@
 const noBtn = document.getElementById('no');
 const yesBtn = document.getElementById('yes');
 const music = document.getElementById('music');
-const body = document.body;
 const stitch = document.getElementById('stitch');
 const tryText = document.getElementById('tryText');
+const mainText = document.getElementById('mainText');
+const body = document.body;
 
 let noClickCount = 0;
 
 // Пуска музиката при първи клик
-body.addEventListener('click', () => {
-  music.play();
-});
+body.addEventListener('click', () => { music.play(); });
 
-// "Не" бутон - бяга и показва съобщение
-noBtn.addEventListener('click', () => {
-  noClickCount++;
-  tryText.textContent = `Опитай пак! x${noClickCount}`;
-  tryText.style.fontSize = (20 + noClickCount*5) + 'px';
-  // Рефреш на страницата
-  location.reload();
-});
-
-// Бягашият бутон "Не" при hover
-noBtn.addEventListener('mouseover', () => {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-});
-
-// "Да" бутон - радост и конфети
+// "Да" бутон - Stitch танцува, конфети, текст "ИЕИИ!"
 yesBtn.addEventListener('click', () => {
-  stitch.classList.add('dance'); // танцува
+  stitch.classList.add('dance');
+  mainText.textContent = "ИЕИИ! Ще бъдеш ли моя валентинка? 💜";
+
   for(let i=0; i<30; i++){
     const confetti = document.createElement('div');
     confetti.classList.add('confetti');
@@ -181,6 +177,21 @@ yesBtn.addEventListener('click', () => {
     body.appendChild(confetti);
     setTimeout(()=> confetti.remove(), 3000);
   }
+});
+
+// "Не" бутон - бяга и показва текст "Опитай пак"
+noBtn.addEventListener('click', () => {
+  noClickCount++;
+  tryText.textContent = `Опитай пак! x${noClickCount}`;
+  tryText.style.fontSize = (20 + noClickCount*5) + 'px';
+  location.reload();
+});
+
+noBtn.addEventListener('mouseover', () => {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
 });
 
 // Падащи сърца
