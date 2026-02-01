@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Валентинка 💜</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #c084fc, #9333ea);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 340px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .bunny {
+    font-size: 60px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin: 15px 0 20px;
+  }
+
+  .retry {
+    font-size: var(--retrySize, 14px);
+    color: #9333ea;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .buttons {
+    position: relative;
+    height: 90px;
+  }
+
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+  }
+
+  #yes {
+    background: #22c55e;
+    color: white;
+    left: 40px;
+  }
+
+  #no {
+    background: #f3f4f6;
+    left: 190px;
+  }
+
+  /* Hearts */
+  .heart {
+    position: absolute;
+    animation: fall linear forwards;
+    color: pink;
+  }
+
+  @keyframes fall {
+    from { transform: translateY(-10vh); opacity: 1; }
+    to { transform: translateY(110vh); opacity: 0; }
+  }
+
+  /* Confetti */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: red;
+    animation: confetti 2s linear forwards;
+  }
+
+  @keyframes confetti {
+    from { transform: translateY(0) rotate(0deg); }
+    to { transform: translateY(100vh) rotate(720deg); }
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="music">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c7f1f7a94.mp3">
+</audio>
+
+<div class
