@@ -15,6 +15,7 @@
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
+    position: relative;
   }
 
   .card {
@@ -25,22 +26,19 @@
     width: 340px;
     position: relative;
     z-index: 2;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: transform 0.5s;
   }
 
   .bunny {
     font-size: 60px;
+    display: inline-block;
+    transition: transform 0.5s;
   }
 
   h1 {
     font-size: 22px;
     margin: 15px 0 20px;
-  }
-
-  .retry {
-    font-size: var(--retrySize, 14px);
-    color: #9333ea;
-    margin-bottom: 10px;
-    font-weight: bold;
   }
 
   .buttons {
@@ -55,6 +53,7 @@
     font-size: 16px;
     cursor: pointer;
     position: absolute;
+    transition: all 0.3s ease;
   }
 
   #yes {
@@ -68,11 +67,24 @@
     left: 190px;
   }
 
-  /* Hearts */
+  /* Анимация танц на стич */
+  .dance {
+    animation: danceAnim 1s infinite alternate;
+  }
+
+  @keyframes danceAnim {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(15deg) translateY(-5px); }
+    50% { transform: rotate(-15deg) translateY(5px); }
+    75% { transform: rotate(10deg) translateY(-5px); }
+    100% { transform: rotate(-10deg) translateY(5px); }
+  }
+
   .heart {
     position: absolute;
-    animation: fall linear forwards;
+    font-size: 24px;
     color: pink;
+    animation: fall linear forwards;
   }
 
   @keyframes fall {
@@ -80,7 +92,6 @@
     to { transform: translateY(110vh); opacity: 0; }
   }
 
-  /* Confetti */
   .confetti {
     position: absolute;
     width: 10px;
@@ -93,13 +104,98 @@
     from { transform: translateY(0) rotate(0deg); }
     to { transform: translateY(100vh) rotate(720deg); }
   }
+
+  /* "Опитай пак" съобщение */
+  .try-again {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    pointer-events: none;
+    text-shadow: 1px 1px 4px black;
+  }
 </style>
 </head>
 
 <body>
 
-<audio id="music">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c7f1f7a94.mp3">
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c7f1f7a94.mp3" type="audio/mpeg">
 </audio>
 
-<div class
+<div class="try-again" id="tryText"></div>
+
+<div class="card">
+  <div class="bunny" id="stitch">🐰</div>
+  <h1>Ще ми станеш ли Валентинка! 💜</h1>
+  <div class="buttons">
+    <button id="yes">Да 💜</button>
+    <button id="no">Не 😢</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+const music = document.getElementById('music');
+const body = document.body;
+const stitch = document.getElementById('stitch');
+const tryText = document.getElementById('tryText');
+
+let noClickCount = 0;
+
+// Пуска музиката при първи клик
+body.addEventListener('click', () => {
+  music.play();
+});
+
+// "Не" бутон - бяга и показва съобщение
+noBtn.addEventListener('click', () => {
+  noClickCount++;
+  tryText.textContent = `Опитай пак! x${noClickCount}`;
+  tryText.style.fontSize = (20 + noClickCount*5) + 'px';
+  // Рефреш на страницата
+  location.reload();
+});
+
+// Бягашият бутон "Не" при hover
+noBtn.addEventListener('mouseover', () => {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+});
+
+// "Да" бутон - радост и конфети
+yesBtn.addEventListener('click', () => {
+  stitch.classList.add('dance'); // танцува
+  for(let i=0; i<30; i++){
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.background = ['#f43f5e','#facc15','#22c55e','#3b82f6','#9333ea'][Math.floor(Math.random()*5)];
+    confetti.style.left = Math.random()*window.innerWidth+'px';
+    confetti.style.animationDuration = (1 + Math.random()*2)+'s';
+    body.appendChild(confetti);
+    setTimeout(()=> confetti.remove(), 3000);
+  }
+});
+
+// Падащи сърца
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.textContent = '💖';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.fontSize = (10 + Math.random()*30) + 'px';
+  heart.style.animationDuration = (2 + Math.random()*3) + 's';
+  body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 5000);
+}
+setInterval(createHeart, 300);
+
+</script>
+</body>
+</html>
